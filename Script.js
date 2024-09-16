@@ -442,7 +442,6 @@ function addToCart() {
     // Atualiza o conteúdo do carrinho e o total
     updateCartContent();
     updateCartTotal();
-    clearButton();
     // Mostra o diálogo do carrinho e o overlay
     showCart();    
 }
