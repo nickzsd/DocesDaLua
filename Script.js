@@ -1,7 +1,11 @@
-let currentProduct = ''; // Variável global para armazenar o produto atual
+let currentProduct = '';
+let cartItems = [];
+let selectedMass = '';
+let selectedCoverage = '';
+let selectedComplementos = [];
 
 function showProduct(product) {
-    currentProduct = product; // Atualiza o produto atual
+    currentProduct = product; 
     let productDisplay = document.getElementById("product-display");
     let content = "";
 
@@ -333,11 +337,39 @@ function showProduct(product) {
     productDisplay.classList.add("visible");
 }
 
+function addCustomCakeToCart() {
+    if (!selectedMass || !selectedCoverage) {
+        alert('Por favor, selecione todos os detalhes do bolo personalizado.');
+        return;
+    }
+
+    let price = 50; // Preço base do bolo personalizado
+    let complementosPrice = selectedComplementos.length * 5; // Ajuste conforme necessário
+    let totalPrice = price + complementosPrice;
+
+    cartItems.push({
+        product: "Bolo Personalizado",
+        quantity: 1, // Sempre 1 bolo personalizado por vez
+        totalPrice: totalPrice,
+        details: {
+            mass: selectedMass,
+            coverage: selectedCoverage,
+            complementos: selectedComplementos
+        }
+    });    
+
+    // Atualiza o conteúdo do carrinho e o total
+    updateCartContent();
+    updateCartTotal();    
+    // Mostra o diálogo do carrinho e o overlay
+    showCart();
+}
+
+// Função para adicionar um item ao carrinho
 function addToCart() {
     let quantity = parseInt(document.getElementById("quantity").value, 10);
     let price = 0;
 
-    // Definir o preço com base no produto atual
     switch (currentProduct) {
         case "chocolate":
             price = 35;
@@ -347,6 +379,24 @@ function addToCart() {
             break;
         case "fuba":
             price = 25;
+            break;
+        case "limão":
+            price = 32;
+            break;
+        case "morango":
+            price = 28;
+            break;
+        case "redVelvet":
+            price = 40;
+            break;
+        case "maracuja":
+            price = 33;
+            break;
+        case "pessego":
+            price = 30;
+            break;
+        case "caramelo":
+            price = 34;
             break;
         case "brigadeiro":
             price = 2.50;
@@ -380,79 +430,175 @@ function addToCart() {
             return;
     }
 
-    let cartContent = document.querySelector("#cart-dialog .cart-content");
     let totalPrice = quantity * price;
 
-    // Cria um item para o carrinho
-    let item = document.createElement("div");
-    item.className = "cart-item";
-    item.innerHTML = `
-        <p><strong>Produto:</strong> ${currentProduct}</p>
-        <p><strong>Quantidade:</strong> ${quantity}</p>
-        <p><strong>Total:</strong> R$ ${totalPrice.toFixed(2)}</p>
-    `;
+    // Adiciona o item ao array de itens do carrinho
+    cartItems.push({
+        product: currentProduct,
+        quantity: quantity,
+        totalPrice: totalPrice
+    });
 
-    cartContent.appendChild(item);
-
-    // Atualiza o total no carrinho
+    // Atualiza o conteúdo do carrinho e o total
+    updateCartContent();
     updateCartTotal();
-
+    clearButton();
     // Mostra o diálogo do carrinho e o overlay
-    document.getElementById("cart-dialog").style.display = "block";
-    document.getElementById("modal-overlay").style.display = "block";
+    showCart();    
+}
+
+// Função para atualizar o conteúdo do carrinho
+function updateCartContent() {
+    let cartContent = document.querySelector("#cart-dialog .cart-content");
+    cartContent.innerHTML = ""; // Limpa o conteúdo do carrinho
+
+    cartItems.forEach(item => {
+        let cartItem = document.createElement("div");
+        cartItem.className = "cart-item";
+        let details = item.details ? `
+            <p><strong>Massa:</strong> ${item.details.mass}</p>
+            <p><strong>Cobertura:</strong> ${item.details.coverage}</p>
+            <p><strong>Complementos:</strong> ${item.details.complementos.join(", ")}</p>
+        ` : '';
+        cartItem.innerHTML = `
+            <p><strong>Produto:</strong> ${item.product}</p>
+            ${details}
+            <p><strong>Quantidade:</strong> ${item.quantity}</p>
+            <p><strong>Total:</strong> R$ ${item.totalPrice.toFixed(2)}</p>
+        `;
+        cartContent.appendChild(cartItem);
+    });
 }
 
 function updateCartTotal() {
-    let cartItems = document.querySelectorAll("#cart-dialog .cart-item");
-    let total = 0;
+    let total = cartItems.reduce((sum, item) => sum + item.totalPrice, 0);
+    document.querySelector("#cart-dialog .cart-total").textContent = `Total: R$ ${total.toFixed(2)}`;
+}
 
-    cartItems.forEach(item => {
-        let totalText = item.querySelector("p:last-child").textContent;
-        // Verifique o texto total e remova quaisquer caracteres não numéricos
-        let itemTotal = parseFloat(totalText.replace("Total: R$ ", "").replace(",", ".").trim());
-        // Adicione o total apenas se for um número válido
-        if (!isNaN(itemTotal)) {
-            total += itemTotal;
-        } else {
-            console.error("Valor inválido encontrado:", totalText);
-        }
+function clearCart() {
+    document.querySelector('.cart-content').innerHTML = '';
+
+    document.querySelector('.cart-total').innerText = 'Total: R$ 0,00';
+
+    cartItems = [];
+}
+
+function showCart() {
+    document.getElementById('customization-display').style.display = 'none';
+    document.getElementById('cart-dialog').style.display = 'block';
+    document.getElementById('modal-overlay').style.display = 'block';
+}
+
+function closeCartDialog() {
+    document.getElementById('cart-dialog').style.display = 'none';
+}
+
+function closeButtonDialog() {
+    document.getElementById('button-dialog').style.display = 'none';
+}
+
+function closeConfirmationDialog() {
+    document.getElementById('confirmation-dialog').style.display = 'none';
+}
+
+function finalizePurchase() {
+    closeCartDialog();
+    document.getElementById('button-dialog').style.display = 'block';
+}
+function clearButton(){
+    document.getElementById('options-container').style.display = 'none';
+}
+
+function OpenFinal() {
+    closeButtonDialog();
+    document.getElementById('confirmation-dialog').style.display = 'block';
+}
+
+function setupCustomizationEvents() {
+    selectedMass = " ";
+    selectedCoverage = " ";
+    selectedComplementos = [ ];
+
+    document.querySelectorAll('.option-button').forEach(button => {
+        button.addEventListener('click', function() {
+            const type = this.dataset.type;
+            const value = this.dataset.value;
+
+            if (type === 'massa') {
+                selectedMass = value;
+                document.querySelectorAll(`.option-button[data-type="${type}"]`).forEach(btn => {
+                    btn.classList.remove('selected');
+                });
+            } else if (type === 'cobertura') {
+                selectedCoverage = value;
+                document.querySelectorAll(`.option-button[data-type="${type}"]`).forEach(btn => {
+                    btn.classList.remove('selected');
+                });
+            }
+
+            this.classList.add('selected');
+        });
     });
 
-    // Atualize o total no carrinho
-    document.querySelector("#cart-dialog .cart-total").textContent = `Total: R$ ${total.toFixed(2)}`;
+    document.querySelectorAll('.complemento-button').forEach(button => {
+        button.addEventListener('click', function() {
+            const value = this.dataset.value;
+            if (selectedComplementos.includes(value)) {
+                selectedComplementos = selectedComplementos.filter(item => item !== value);
+                this.classList.remove('selected');
+            } else {
+                selectedComplementos.push(value);
+                this.classList.add('selected');
+            }
+        });
+    });
 }
 
 function goBack() {
     let productDisplay = document.getElementById("product-display");
-
+    
     if (productDisplay) {
-        productDisplay.innerHTML = "";
         productDisplay.classList.remove("visible");
+        productDisplay.innerHTML = "";
     }
+    
+    currentDisplay = 'intro';
 }
 
-function finalizePurchase() {
-    document.getElementById("cart-dialog").style.display = "none";
-    document.getElementById("modal-overlay").style.display = "none";
-    document.getElementById("confirmation-dialog").style.display = "block";
+function setupEventListeners() {
+    document.getElementById('customize-cake-btn').addEventListener('click', () => {
+        document.getElementById('intro-display').style.display = 'block';
+        document.getElementById('modal-overlay').style.display = 'block';
+    });
+    
+    document.getElementById('start-customization').addEventListener('click', () => {
+        document.getElementById('intro-display').style.display = 'none';
+        document.getElementById('customization-display').style.display = 'block';
+        currentDisplay = 'customization';
+        setupCustomizationEvents();
+    });
+
+    document.getElementById('close-customization').addEventListener('click', () => {
+        document.getElementById('customization-display').style.display = '';
+        document.getElementById('intro-display').style.display = '';
+    });
+
+    document.getElementById('close-intro').addEventListener('click', () => {
+        document.getElementById('intro-display').style.display = '';
+        document.getElementById('modal-overlay').style.display = '';
+    });
+
+    document.getElementById('continue-customization').addEventListener('click', () => {
+        addCustomCakeToCart();
+    });
+
+    document.getElementById("back-button").addEventListener('click', goBack);
+
+    document.getElementById("modal-overlay").addEventListener("click", function() {
+        closeButtonDialog();
+        closeCartDialog();
+        closeConfirmationDialog();
+    });
 }
 
-function closeCartDialog() {
-    document.getElementById("cart-dialog").style.display = "none";
-    document.getElementById("modal-overlay").style.display = "none";
-}
-
-function closeConfirmationDialog() {
-    document.getElementById("confirmation-dialog").style.display = "none";
-    document.getElementById("modal-overlay").style.display = "none";
-}
-
-function showCart() {
-    document.getElementById("cart-dialog").style.display = "block";
-    document.getElementById("modal-overlay").style.display = "block";
-}
-
-document.getElementById("modal-overlay").addEventListener("click", function() {
-    closeCartDialog();
-    closeConfirmationDialog();
-});
+document.addEventListener('DOMContentLoaded', setupEventListeners);

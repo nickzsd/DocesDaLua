@@ -3,14 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="Images/Logo.png" type="imagem/png">
+    <link rel="icon" href="Images/Logo.png" type="image/png">
     <title>DOCES DA LUA</title>
     <link href="https://fonts.googleapis.com/css2?family=Delius+Swash+Caps&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Delius+Swash+Caps&family=Shrikhand&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="Style.css">
 </head>
 <body>
     <header>
         <h1><img src="Images/Logo.png" alt="Logo" width="125"></h1>
+        <h2>-MENU-</h2>
         
         <div class="dropdown-container">
             <div class="dropdown">
@@ -29,7 +31,7 @@
             </div>
             
             <div class="dropdown">
-            <button class="button-style">FAZER SEU BOLO PERSONALIZADO</button>
+                <button class="button-style" id="customize-cake-btn">FAZER SEU BOLO PERSONALIZADO</button>
             </div>
 
             <div class="dropdown">
@@ -48,9 +50,9 @@
             </div>
 
             <div class="dropdown">
-            <button id="cart-button" class="cart-button" onclick="showCart()">
-                <img src="Images/Car.png" alt="Carrinho">
-            </button>
+                <button id="cart-button" class="cart-button" onclick="showCart()">
+                    <img src="Images/Car.png" alt="Carrinho">
+                </button>
             </div>
         </div>        
     </header>
@@ -76,28 +78,100 @@
         <button id="back-button" class="back-button" onclick="goBack()">Voltar</button>
     </main>
 
-    <footer>
+    <footer class="full-width-footer"></footer>
+    
+    <div id="Sub-Footer">
+        <p><bold>SEJA BEM-VINDO AO DOCES DA LUA!</bold></p>
+    </div>
 
-    </footer>
+    <div id="Info_Footer">
+        <p>No Doces da Lua, acreditamos que os momentos especiais merecem doces à altura. Nosso compromisso é garantir que cada cliente tenha exatamente o que deseja, colocando sua criatividade em primeiro lugar. Se você procura bolos e doces prontos, temos uma seleção incrível de sabores. Mas o nosso grande diferencial é oferecer a experiência de criar o seu próprio bolo.
+            Você pode personalizar tudo: massa, recheio, cobertura e decoração, deixando o bolo exatamente do jeito que imaginou! Nossa plataforma é fácil de usar, garantindo que criar o seu bolo seja tão divertido quanto saboreá-lo.
+            O Doces da Lua foi criado para aqueles que acreditam que momentos especiais merecem personalização e carinho. Por isso, nossa missão é oferecer a você não apenas um doce, mas uma experiência única de criação, onde cada detalhe é feito para refletir o seu estilo e o seu gosto.
+            A vontade do cliente é a nossa prioridade. Desde quem busca praticidade ao escolher um dos nossos bolos já prontos até quem deseja criar algo único, garantimos que a sua experiência será agradável e deliciosa.
+            Venha conosco e transforme sua imaginação em sabor. Afinal, no Doces da Lua, você é quem faz a receita dos seus momentos doces!
+            </p>
+    </div>
 
-    <div id="modal-overlay" class="modal-overlay"></div>
+    <div id="RefImg"></div>
 
-    <div id="cart-dialog" class="cart-dialog">
-        <div class="dialog-content">
+    <div id="Sub-Footer2">
+        <p><bold>SOBRE NÓS</bold></p>
+    </div>
+
+    <div id="AboutUs">
+        No Doces da Lua, somos uma equipe de três jovens empresários apaixonados por transformar o mundo dos doces com inovação e criatividade. Com uma visão voltada para o futuro e uma profunda compreensão da importância da tecnologia, buscamos criar uma experiência única e personalizada para nossos clientes.
+        Nossa jornada começou com a ideia de unir a tradição dos doces com o dinamismo da tecnologia moderna. Em parceria com um talentoso programador, conseguimos desenvolver uma plataforma online que permite a personalização completa dos nossos produtos. Essa integração de sabor e tecnologia é o coração do nosso projeto, refletindo nossa crença de que a inovação pode e deve ser uma parte essencial de todas as experiências cotidianas.
+        Nós acreditamos que a comida tem o poder de unir pessoas e criar memórias inesquecíveis. Por isso, trabalhamos incansavelmente para garantir que cada detalhe, desde o design da plataforma até a seleção dos ingredientes, seja pensado para proporcionar a melhor experiência possível. Nosso compromisso é com a qualidade, a criatividade e a satisfação total dos nossos clientes.
+        Através do nosso trabalho, buscamos não apenas oferecer doces deliciosos, mas também criar uma forma divertida e interativa de celebrar momentos especiais. No Doces da Lua, estamos sempre explorando novas maneiras de surpreender e encantar nossos clientes, mantendo a tradição dos doces enquanto abraçamos as possibilidades do futuro.
+        Junte-se a nós nesta doce jornada e descubra como a tecnologia e a criatividade podem transformar simples momentos em experiências verdadeiramente memoráveis.
+    </div>
+
+    <div id="intro-display" class="modal-overlay">
+        <div class="modal-content">
+            <h2><B>PERSONALIZE SEU BOLO</B> <style>h2{text-align: center;}</style></h2>
+            <p>Escolha a massa, a cobertura e os complementos para criar seu bolo personalizado. Clique na seta abaixo para começar.</p>
+            <button id="start-customization" class="button-style">Começar</button>
+            <span class="close" id="close-intro">&times;</span>
+        </div>
+    </div>
+
+    <div id="customization-display" class="modal-overlay">
+        <div class="modal-content">
+            <button id="close-customization" class="close-button">&times;</button>
+            <h2><b>ESCOLHA AS OPÇÕES DO BOLO</b><style>h2{color: #6a2817;}</style></h2>
+            <div id="cake-model" class="cake-display">
+                <img src="Images/BoloCinza.png" alt="Modelo de Bolo" id="cake-image">
+            </div>
+            <div class="options-container">
+                <div class="left-container">
+                    <h3>MASSA <style> h3{color: #6a2817;}</style></h3>
+                    <button class="option-button" data-type="massa" data-value="chocolate">Chocolate</button>
+                    <button class="option-button" data-type="massa" data-value="baunilha">Fubá</button>
+                    <button class="option-button" data-type="massa" data-value="red-velvet">Cenoura</button>
+                </div>
+                <div class="center-container">
+                    <h3>COBERTURA<style> h3{color: #6a2817;}</style></h3>
+                    <button class="option-button" data-type="cobertura" data-value="chocolate">Chocolate</button>
+                    <button class="option-button" data-type="cobertura" data-value="morango">Morango</button>
+                    <button class="option-button" data-type="cobertura" data-value="creme">Creme</button>
+                </div>
+                <div class="bottom-container">
+                    <h3>COMPLEMENTOS<style> h3{color: #6a2817;}</style></h3>
+                    <button class="complemento-button" data-value="granulado">Granulado</button>
+                    <button class="complemento-button" data-value="coco">Coco</button>
+                    <button class="complemento-button" data-value="nozes">Morango</button>
+                </div>
+            </div>
+            <button id="continue-customization" class="button-style">Continuar</button>
+        </div>
+    </div>
+
+    <div id="cart-dialog" class="modal-overlay">
+        <div class="modal-content">
             <span class="close" onclick="closeCartDialog()">&times;</span>
             <h3>Carrinho</h3>
             <div class="cart-content">
                 
             </div>
             <p class="cart-total">Total: R$ 0,00</p>
-            <button class="finalize-button" onclick="finalizePurchase()">Finalizar Compra</button>
+            <button class="cart-button" onclick="finalizePurchase()">Finalizar Compra</button>
+            <button class="cart-button" onclick="clearCart()">Limpar Carrinho</button> <!-- Novo botão -->
         </div>
     </div>
-
-    <div id="confirmation-dialog" class="confirmation-dialog">
-        <div class="dialog-content">
+    
+    <div id="button-dialog" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeButtonDialog()">&times;</span>
+            <strong>FORMA DE PAGAMENTO<br></strong>
+            <button class="button-style" onclick="OpenFinal()"><b>3 pontos na Media</b></button>
+        </div>
+    </div>
+    
+    <div id="confirmation-dialog" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
             <span class="close-button" onclick="closeConfirmationDialog()">&times;</span>
-            <p>Obrigado por comprar conosco!</p>
+            <p>Obrigado por comprar conosco! Sua encomenda chegará em 4 dias úteis</p>
         </div>
     </div>
 
