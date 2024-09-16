@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="Images/Logo.png" type="imagem/png">
+    <title>DOCES DA LUA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Delius+Swash+Caps&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="Style.css">
+</head>
+<body>
+    <header>
+        <h1><img src="Images/Logo.png" alt="Logo" width="125"></h1>
+        
+        <div class="dropdown-container">
+            <div class="dropdown">
+                <button class="button-style">BOLOS PRONTOS</button>
+                <div class="dropdown-content">
+                    <a href="#" onclick="showProduct('chocolate')">Bolo de Chocolate</a>
+                    <a href="#" onclick="showProduct('cenoura')">Bolo de Cenoura</a>
+                    <a href="#" onclick="showProduct('fuba')">Bolo de Fubá</a>
+                    <a href="#" onclick="showProduct('limao')">Bolo de Limão</a>
+                    <a href="#" onclick="showProduct('morango')">Bolo de Morango</a>
+                    <a href="#" onclick="showProduct('redVelvet')">Bolo Red Velvet</a>
+                    <a href="#" onclick="showProduct('maracuja')">Bolo de Maracujá</a>
+                    <a href="#" onclick="showProduct('pessego')">Bolo de Pêssego</a>
+                    <a href="#" onclick="showProduct('caramelo')">Bolo de Caramelo</a>
+                </div>
+            </div>
+            
+            <div class="dropdown">
+            <button class="button-style">FAZER SEU BOLO PERSONALIZADO</button>
+            </div>
+
+            <div class="dropdown">
+                <button class="button-style">DOCES PRONTOS</button>
+                <div class="dropdown-content">
+                    <a href="#" onclick="showProduct('brigadeiro')">Brigadeiro</a>
+                    <a href="#" onclick="showProduct('beijinho')">Beijinho</a>
+                    <a href="#" onclick="showProduct('peDeMoleque')">Pé de Moleque</a>
+                    <a href="#" onclick="showProduct('cajuzinho')">Cajuzinho</a>
+                    <a href="#" onclick="showProduct('coconutBalls')">Bolinho de Coco</a>
+                    <a href="#" onclick="showProduct('docinhoDeLeite')">Docinho de Leite</a>
+                    <a href="#" onclick="showProduct('pudim')">Pudim</a>
+                    <a href="#" onclick="showProduct('quindim')">Quindim</a>
+                    <a href="#" onclick="showProduct('trufa')">Trufa</a>
+                </div>
+            </div>
+
+            <div class="dropdown">
+            <button id="cart-button" class="cart-button" onclick="showCart()">
+                <img src="Images/Car.png" alt="Carrinho">
+            </button>
+            </div>
+        </div>        
+    </header>
+    
+    <main>
+        <div id="product-display" class="product-display">
+            <div class="product-image">
+                <img src="Images/" alt="Imagem do Produto">
+            </div>
+            <div class="product-details">
+                <h2 id="product-name">Nome do Produto</h2>
+                <p id="product-description">Descrição do Produto</p>
+                <p id="product-price">Preço: R$ xx,xx</p>
+                <div id="product-actions" class="product-actions">
+                    <div class="quantity-insert-container">
+                        <label for="quantity">Quantidade:</label>
+                        <input type="number" id="quantity" min="1" value="1">
+                        <button onclick="addToCart()">Adicionar ao Carrinho</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button id="back-button" class="back-button" onclick="goBack()">Voltar</button>
+    </main>
+
+    <footer>
+
+    </footer>
+
+    <div id="modal-overlay" class="modal-overlay"></div>
+
+    <div id="cart-dialog" class="cart-dialog">
+        <div class="dialog-content">
+            <span class="close" onclick="closeCartDialog()">&times;</span>
+            <h3>Carrinho</h3>
+            <div class="cart-content">
+                
+            </div>
+            <p class="cart-total">Total: R$ 0,00</p>
+            <button class="finalize-button" onclick="finalizePurchase()">Finalizar Compra</button>
+        </div>
+    </div>
+
+    <div id="confirmation-dialog" class="confirmation-dialog">
+        <div class="dialog-content">
+            <span class="close-button" onclick="closeConfirmationDialog()">&times;</span>
+            <p>Obrigado por comprar conosco!</p>
+        </div>
+    </div>
+
+    <script src="Script.js"></script>
+</body>
+</html>
